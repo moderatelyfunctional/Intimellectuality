@@ -42,15 +42,12 @@ def fetch_profile(request):
 	user = MeUser.objects.try_fetch(username=username)
 	if not user:
 		return HttpResponse('User doesnt exist', status=400)
-	user.description = 'Econ'
-	user.save()
-
 
 	return HttpResponse(json.dumps({'description': user.description}), content_type='application/json')
 
 def update_profile(request):
 	body_unicode = request.body.decode('utf-8')
-	body = json.loads(json.loads(body_unicode))
+	body = json.loads(body_unicode)
 
 	username = body['username']
 	description = body['description']

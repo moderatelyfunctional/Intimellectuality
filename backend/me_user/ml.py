@@ -25,17 +25,13 @@ def fetch_docs(user_description_text, posts):
 def order_docs(user_description_text, posts):
 	docs = fetch_docs(user_description_text, posts)
 
-	model = Doc2Vec(documents=docs, min_count=1, dm=0)	
+	model = Doc2Vec(alpha=0.025, min_alpha=0.025)  # use fixed learning rate
+	model.build_vocab(docs)
+	model.train(docs, total_examples=len(posts), epochs=10)
 
 	ranked_documents = [
 		(model.docvecs.similarity('duser', 'd{}'.format(i)), posts[i].get_json()) for i in range(len(posts))
 	]
 
 	ordered_documents = sorted(ranked_documents, key=lambda rank_document: rank_document[0], reverse=True)
-	print(ordered_documents)
 	return [ordered_document[1] for ordered_document in ordered_documents]
-
-# print(model.docvecs.most_similar('d1'))
-# print(model.docvecs.most_similar('d2'))
-# print(model.docvecs.most_similar('d3'))
-# print(model.docvecs.most_similar('d4'))
