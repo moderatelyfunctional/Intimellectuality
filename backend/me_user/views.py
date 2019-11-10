@@ -1,18 +1,23 @@
 import json
 
-from .models import MeUser, MeLink, MePost
+import me_user.ml as ml
+from me_user.models import MeUser, MeLink, MePost
 
 from django.shortcuts import render
 from django.http import HttpResponse
 
 # Create your views here.
 def create_post(request):
-	body_unicode = request.body.decode('utf-8')
-	body = json.loads(json.loads(body_unicode))
+	# body_unicode = request.body.decode('utf-8')
+	# body = json.loads(json.loads(body_unicode))
 
-	title = body['title']
-	author = body['username']
-	links = body['links']
+	# title = body['title']
+	# author = body['username']
+	# links = body['links']
+
+	title =  request.POST.get('title')
+	author = request.POST.get('username')
+	links =  request.POST.getlist('links')
 
 	author = MeUser.objects.try_fetch(username=author)
 	if not author:
@@ -25,7 +30,11 @@ def create_post(request):
 
 def fetch_posts(request):
 	posts = MePost.objects.all().order_by('-date_created')
-	return HttpResponse(json.dumps([post.get_json() for post in posts]), content_type='application/json')
+	user = MeUser.objects.try_fetch(username='jing')
+
+	ordered_posts = ml.order_docs(user.description, posts)
+
+	return HttpResponse(json.dumps(ordered_posts), content_type='application/json')
 
 def fetch_profile(request):
 	username = request.GET.get('username')
@@ -33,6 +42,9 @@ def fetch_profile(request):
 	user = MeUser.objects.try_fetch(username=username)
 	if not user:
 		return HttpResponse('User doesnt exist', status=400)
+	user.description = 'Econ'
+	user.save()
+
 
 	return HttpResponse(json.dumps({'description': user.description}), content_type='application/json')
 
