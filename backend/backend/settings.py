@@ -25,7 +25,7 @@ SECRET_KEY = '6k^7=u_bi0y-0$9lsrg7df9(j346uz1)=_i-q+1((h-k30#9q^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['18.218.86.254']
 
 AUTH_USER_MODEL = 'me_user.MeUser'
 
