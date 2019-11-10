@@ -25,3 +25,17 @@ class MeUserManager(BaseUserManager):
 
 	def create_superuser(self, username, password, **extra_fields):
 		return self._create_user(username, password, True, **extra_fields)
+
+class MeLinkManager(BaseUserManager):
+	def try_fetch(self, *args, **kwargs):
+		try:
+			return self.get(*args, **kwargs)
+		except ObjectDoesNotExist:
+			return None
+
+class MePostManager(BaseUserManager):
+	def try_fetch(self, *args, **kwargs):
+		try:
+			return self.get(*args, **kwargs)
+		except ObjectDoesNotExist:
+			return None

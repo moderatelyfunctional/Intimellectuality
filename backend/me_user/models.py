@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
-from me_user.managers import MeUserManager
+from me_user.managers import MeUserManager, MeLinkManager, MePostManager
 
 # Create your models here.
 class MeUser(AbstractBaseUser, PermissionsMixin):
@@ -18,9 +18,23 @@ class MeLink(models.Model):
 	title = models.CharField(_('title'), max_length=255, blank=True)
 	link = models.URLField(_('link'), max_length=200, blank=True)
 
+	objects = MeLinkManager()
+
+	def get_json(self):
+		return {'link': self.link}
+
 class MePost(models.Model):
 	title = models.CharField(_('title'), max_length=255, blank=True)
 	author = models.ForeignKey(MeUser, on_delete=models.CASCADE)
 
 	date_created = models.DateTimeField(_('date created'), default=timezone.now)
 	links = models.ManyToManyField(MeLink, related_name='post_links')
+
+	objects = MePostManager()
+
+	def get_json(self):
+		return {
+			'title': self.title,
+			'author': self.author.username,
+			'links': [link.get_json() for link in self.links.all()]
+		}

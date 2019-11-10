@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 import me_auth.views
+import me_user.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +26,9 @@ urlpatterns = [
 urlpatterns.extend([
 	path('signup', me_auth.views.signup),
 	path('login', me_auth.views.login)
+])
+
+urlpatterns.extend([
+    path('create_post', me_user.views.create_post),
+    path('fetch_posts', me_user.views.fetch_posts)
 ])
