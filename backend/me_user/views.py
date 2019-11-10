@@ -33,7 +33,6 @@ def fetch_posts(request):
 	user = MeUser.objects.try_fetch(username='jing')
 
 	ordered_posts = ml.order_docs(user.description, posts)
-
 	return HttpResponse(json.dumps(ordered_posts), content_type='application/json')
 
 def fetch_profile(request):
@@ -42,6 +41,9 @@ def fetch_profile(request):
 	user = MeUser.objects.try_fetch(username=username)
 	if not user:
 		return HttpResponse('User doesnt exist', status=400)
+	user.description = 'inequality'
+	user.save()
+
 
 	return HttpResponse(json.dumps({'description': user.description}), content_type='application/json')
 

@@ -34,4 +34,5 @@ def order_docs(user_description_text, posts):
 	]
 
 	ordered_documents = sorted(ranked_documents, key=lambda rank_document: rank_document[0], reverse=True)
+	print(ordered_documents)
 	return [ordered_document[1] for ordered_document in ordered_documents]
