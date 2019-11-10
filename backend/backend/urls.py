@@ -30,5 +30,7 @@ urlpatterns.extend([
 
 urlpatterns.extend([
     path('create_post', me_user.views.create_post),
-    path('fetch_posts', me_user.views.fetch_posts)
+    path('fetch_posts', me_user.views.fetch_posts),
+    path('fetch_profile', me_user.views.fetch_profile),
+    path('update_profile', me_user.views.update_profile)
 ])

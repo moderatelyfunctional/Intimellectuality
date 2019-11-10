@@ -26,3 +26,30 @@ def create_post(request):
 def fetch_posts(request):
 	posts = MePost.objects.all().order_by('-date_created')
 	return HttpResponse(json.dumps([post.get_json() for post in posts]), content_type='application/json')
+
+def fetch_profile(request):
+	username = request.GET.get('username')
+
+	user = MeUser.objects.try_fetch(username=username)
+	if not user:
+		return HttpResponse('User doesnt exist', status=400)
+
+	return HttpResponse(json.dumps({'description': user.description}), content_type='application/json')
+
+def update_profile(request):
+	body_unicode = request.body.decode('utf-8')
+	body = json.loads(json.loads(body_unicode))
+
+	username = body['username']
+	description = body['description']
+
+	user = MeUser.objects.try_fetch(username=username)
+	if not user:
+		return HttpResponse('User doesnt exist', status=400)
+
+	user.description = description
+	user.save()
+	return HttpResponse('Success')
+
+
+
