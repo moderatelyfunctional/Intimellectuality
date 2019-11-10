@@ -8,11 +8,11 @@ from django.http import HttpResponse
 # Create your views here.
 def create_post(request):
 	body_unicode = request.body.decode('utf-8')
-	body = json.loads(body_unicode)
+	body = json.loads(json.loads(body_unicode))
 
 	title = body['title']
 	author = body['username']
-	links = body['links[]']
+	links = body['links']
 
 	author = MeUser.objects.try_fetch(username=author)
 	if not author:
