@@ -26,6 +26,7 @@ SECRET_KEY = '6k^7=u_bi0y-0$9lsrg7df9(j346uz1)=_i-q+1((h-k30#9q^'
 DEBUG = True
 
 ALLOWED_HOSTS = ['18.218.86.254']
+CORS_ORIGIN_ALLOW_ALL = DEBUG
 
 AUTH_USER_MODEL = 'me_user.MeUser'
 
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'me_user',
     'me_auth',
 ]
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
